@@ -8,12 +8,14 @@ import java.util.UUID;
 /**
  * Created by developer on 09 Nov, 2020
  */
-public class LabOrderManifest extends BaseOpenmrsData {
+public class LabManifest extends BaseOpenmrsData {
     private Integer id;
     private Date startDate;
     private Date endDate;
-    private String orderIdList;
-    private Integer testType;
+    private Date dispatchDate;
+    private String courier;
+    private String courierOfficer;
+    private String status;
     private Date dateCreated;
     private Date dateChanged;
     private Boolean voided;
@@ -21,15 +23,17 @@ public class LabOrderManifest extends BaseOpenmrsData {
     private String voidReason;
     private String uuid;
 
-    public LabOrderManifest() {
+    public LabManifest() {
         prePersist();
     }
 
-    public LabOrderManifest(Date startDate, Date endDate, String orderIdList, Integer testType, Date dateCreated, Date dateChanged,Boolean voided, Date dateVoided, String voidReason, String uuid) {
+    public LabManifest(Date startDate, Date endDate, Date dispatchDate, String courier, String courierOfficer, String status, Date dateCreated, Date dateChanged, Boolean voided, Date dateVoided, String voidReason, String uuid) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.orderIdList = orderIdList;
-        this.testType = testType;
+        this.dispatchDate = dispatchDate;
+        this.courier = courier;
+        this.courierOfficer = courierOfficer;
+        this.status = status;
         this.dateCreated = dateCreated;
         this.dateChanged = dateChanged;
         this.voided = voided;
@@ -64,20 +68,36 @@ public class LabOrderManifest extends BaseOpenmrsData {
         this.endDate = endDate;
     }
 
-    public String getOrderIdList() {
-        return orderIdList;
+    public Date getDispatchDate() {
+        return dispatchDate;
     }
 
-    public void setOrderIdList(String orderIdList) {
-        this.orderIdList = orderIdList;
+    public void setDispatchDate(Date dispatchDate) {
+        this.dispatchDate = dispatchDate;
     }
 
-    public Integer getTestType() {
-        return testType;
+    public String getCourier() {
+        return courier;
     }
 
-    public void setTestType(Integer testType) {
-        this.testType = testType;
+    public void setCourier(String courier) {
+        this.courier = courier;
+    }
+
+    public String getCourierOfficer() {
+        return courierOfficer;
+    }
+
+    public void setCourierOfficer(String courierOfficer) {
+        this.courierOfficer = courierOfficer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -145,4 +165,5 @@ public class LabOrderManifest extends BaseOpenmrsData {
         if (null == getUuid())
             setUuid(UUID.randomUUID().toString());
     }
+
 }

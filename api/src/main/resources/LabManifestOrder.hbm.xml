@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.kenyaemrorderentry">
+
+	<class name="org.openmrs.module.kenyaemrorderentry.LabManifestOrder"
+		table="kenyaemr_order_entry_lab_manifest_order">
+		<id name="id" type="int" column="id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<discriminator column="id" insert="false" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+		<many-to-one name="labManifest" class ="org.openmrs.module.kenyaemrorderentry.LabManifest" column="manifest_id"/>
+		<one-to-one name="order" class ="org.openmrs.Order"/>
+		<property name="payload" type ="java.lang.String" column ="payload"/>
+		<property name="dateSent" type="java.util.Date" column="date_sent" length="19"/>
+		<property name="status" type ="java.lang.String" column ="status" length="255"/>
+		<property name="result" type ="java.lang.String" column ="result" length="255"/>
+		<property name="resultDate" type="java.util.Date" column="result_date" length="19"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19"/>
+		<property name="voided" type="java.lang.Boolean" column="voided" length="1"/>
+		<many-to-one name="voidedBy" class ="org.openmrs.User" column="voided_by"/>
+		<property name="dateVoided" type ="java.util.Date" column ="date_voided" length="19"/>
+		<property name="voidReason" type="java.lang.String" column="voided_reason" length="255"/>
+
+	</class>
+
+</hibernate-mapping>

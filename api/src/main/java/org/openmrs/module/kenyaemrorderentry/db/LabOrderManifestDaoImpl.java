@@ -7,9 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.DataException;
 import org.openmrs.api.db.DAOException;
-import org.openmrs.module.kenyaemrorderentry.LabOrderManifest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DaoSupport;
+import org.openmrs.module.kenyaemrorderentry.LabManifest;
+import org.openmrs.module.kenyaemrorderentry.LabManifestOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -37,26 +36,26 @@ public class LabOrderManifestDaoImpl implements LabOrderManifestDao {
     }
 
     @Override
-    public LabOrderManifest saveLabOrderManifest(LabOrderManifest labOrderManifest) throws DAOException {
-        sessionFactory.getCurrentSession().saveOrUpdate(labOrderManifest);
-        return labOrderManifest;
+    public LabManifest saveLabOrderManifest(LabManifest labManifest) throws DAOException {
+        sessionFactory.getCurrentSession().saveOrUpdate(labManifest);
+        return labManifest;
     }
 
     @Override
-    public List<LabOrderManifest> getLabOrderManifest() throws DataException {
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabOrderManifest.class);
+    public List<LabManifest> getLabOrderManifest() throws DataException {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabManifest.class);
         criteria.add(Restrictions.eq("voided", false));
         return criteria.list();
     }
 
     @Override
-    public LabOrderManifest getLabOrderManifestById(Integer id) throws DataException {
-        return (LabOrderManifest) this.sessionFactory.getCurrentSession().get(LabOrderManifest.class, id);
+    public LabManifest getLabOrderManifestById(Integer id) throws DataException {
+        return (LabManifest) this.sessionFactory.getCurrentSession().get(LabManifest.class, id);
     }
 
     @Override
-    public List<LabOrderManifest> getLabOrderManifestBetweenDates(Date startDate, Date endDate) throws DataException{
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabOrderManifest.class);
+    public List<LabManifest> getLabOrderManifestBetweenDates(Date startDate, Date endDate) throws DataException{
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabManifest.class);
         criteria.add(Restrictions.ge("startDate",startDate));
         criteria.add(Restrictions.le("endDate",endDate));
         return criteria.list();
@@ -64,6 +63,37 @@ public class LabOrderManifestDaoImpl implements LabOrderManifestDao {
 
     @Override
     public void voidLabOrderManifest(Integer id) throws DAOException{
+        sessionFactory.getCurrentSession().saveOrUpdate(id);
+    }
+
+    //Lab minifest orders methods
+    @Override
+    public LabManifestOrder saveLabManifestOrder(LabManifestOrder labManifestOrder) throws DAOException {
+        sessionFactory.getCurrentSession().saveOrUpdate(labManifestOrder);
+        return labManifestOrder;
+    }
+
+    @Override
+    public List<LabManifestOrder> getLabManifestOrders() throws DataException {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabManifestOrder.class);
+        criteria.add(Restrictions.eq("voided", false));
+        return criteria.list();
+    }
+
+    @Override
+    public List<LabManifestOrder> getLabManifestOrderByManifest(LabManifest labManifest) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(LabManifestOrder.class);
+        criteria.add(Restrictions.eq("labManifest", labManifest));
+        return criteria.list();
+    }
+
+    @Override
+    public LabManifestOrder getLabManifestOrderById(Integer id) throws DataException {
+        return (LabManifestOrder) this.sessionFactory.getCurrentSession().get(LabManifestOrder.class, id);
+    }
+
+    @Override
+    public void voidLabManifestOrder(Integer id) throws DAOException{
         sessionFactory.getCurrentSession().saveOrUpdate(id);
     }
 }

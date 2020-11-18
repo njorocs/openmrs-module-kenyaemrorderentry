@@ -15,7 +15,7 @@
             </not>
         </preConditions>
         <comment>
-            Create table to store Lab order manifest
+            Create table to store Lab order manifests
         </comment>
         <createTable tableName="kenyaemr_order_entry_lab_manifest">
             <column name="id" autoIncrement="true" type="int">
@@ -27,11 +27,66 @@
             <column name="end_date" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="order_id_list" type="TEXT">
+            <column name="dispatch_date" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="courier" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="courier_officer" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="test_type" type="int">
+            <column name="date_changed" type="datetime"/>
+            <column defaultValueBoolean="false" name="voided" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_voided" type="datetime"/>
+            <column name="voided_reason" type="varchar(255)"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="kenyaemr_order_entry_002" author="schege">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="kenyaemr_order_entry_lab_manifest_order"/>
+            </not>
+        </preConditions>
+        <comment>
+            Create table to store Lab manifest orders
+        </comment>
+        <createTable tableName="kenyaemr_order_entry_lab_manifest_order">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="manifest_id" type="date">
                 <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_sent" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result_date" type="date">
+                <constraints nullable="true"/>
             </column>
             <column name="date_created" type="datetime">
                 <constraints nullable="false"/>
@@ -46,6 +101,15 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="kenyaemr_order_entry_lab_manifest_order" baseColumnNames="manifest_id"
+             constraintName="lab_order_manifest"
+             referencedTableName="kenyaemr_order_entry_lab_order_manifest" referencedColumnNames="id"
+             deferrable="false" initiallyDeferred="false"/>
+
+        <addForeignKeyConstraint baseTableName="kenyaemr_order_entry_lab_manifest" baseColumnNames="order_id"
+                                 constraintName="order"
+                                 referencedTableName="orders" referencedColumnNames="order_id"
+                                 deferrable="false" initiallyDeferred="false"/>
     </changeSet>
 
 </databaseChangeLog>
